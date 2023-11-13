@@ -68,8 +68,8 @@ describe("API Create Car", () => {
 
   it("failed create car : Access forbidden", async () => {
     const admin = {
-      email: "ancr@binar.co.id",
-      password: "1234567",
+      email: "fikri@binar.co.id",
+      password: "123456",
     }
     const check = await request(app).post("/v1/auth/login").send(admin)
     const res = JSON.parse(check.text)
