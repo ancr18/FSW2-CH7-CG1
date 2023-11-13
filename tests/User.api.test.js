@@ -25,10 +25,17 @@ describe("API Login", () => {
 
 // Fajrin
 // 2. /v1/auth/whoami: Test Success & Error
+
 describe("API WHOAMI", () => {
   it("success whoami", async () => {
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IkZpa3JpIiwiZW1haWwiOiJmaWtyaUBiaW5hci5jby5pZCIsImltYWdlIjpudWxsLCJyb2xlIjp7ImlkIjoxLCJuYW1lIjoiQ1VTVE9NRVIifSwiaWF0IjoxNjk5ODg2ODQyfQ.4CFG0-WtPioB2Pxm7YqbWysyGDO0P9HlIiEX4appT_w";
+    const user = {
+      email: "fikri@binar.co.id",
+      password: "123456",
+    };
+    const check = await request(app).post("/v1/auth/login").send(user);
+    const res = JSON.parse(check.text);
+    const token = res.accessToken;
+
     const response = await request(app)
       .get("/v1/auth/whoami")
       .set(`Authorization`, `Bearer ${token}`);
@@ -36,10 +43,16 @@ describe("API WHOAMI", () => {
   });
 
   it("failed whoami", async () => {
-    const token = "nguwawor";
+    const failedUser = {
+      email: "peter@binar.co.id",
+      password: "123456",
+    };
+    const check = await request(app).post("/v1/auth/login").send(failedUser);
+    const res = JSON.parse(check.text);
+    const failedToken = res.accessToken;
     const response = await request(app)
       .get("/v1/auth/whoami")
-      .set(`Authorization`, `Bearer ${token}`);
+      .set(`Authorization`, `Bearer ${failedToken}`);
     expect(response.statusCode).toBe(401);
   });
 });
