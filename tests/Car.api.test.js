@@ -1,5 +1,5 @@
-const request = require('supertest');
-const app = require('../app')
+const request = require("supertest");
+const app = require("../app");
 // const baseURL = "http://localhost:8000"
 const dotenv = require("dotenv");
 dotenv.config();
@@ -26,15 +26,61 @@ dotenv.config();
 // });
 
 describe("API get all cars", () => {
-    it("success get all data cars", async () => {
-        const response = await request(app).get('/v1/cars')
-        expect(response.statusCode).toBe(200);
-    });
+  it("success get all data cars", async () => {
+    const response = await request(app).get("/v1/cars");
+    expect(response.statusCode).toBe(200);
+  });
 });
 
 describe("API get car By ID", () => {
-    it("success get data car", async () => {
-        const response = await request(app).get('/v1/cars/20')
-        expect(response.statusCode).toBe(200);
-    });
+  it("success get data car", async () => {
+    const response = await request(app).get("/v1/cars/20");
+    expect(response.statusCode).toBe(200);
+  });
+});
+
+describe("API put car", () => {
+  it("success update data car", async () => {
+    const admin = {
+      email: "john@binar.co.id",
+      password: "12345678",
+    };
+    const check = await request(app).post("/v1/auth/login").send(admin);
+    const res = JSON.parse(check.text);
+    const token = res.accessToken;
+    console.log(token);
+    const car = {
+      name: "Toyota 1",
+      price: 3000000,
+      size: "SMALL",
+      image: "https://source.unsplash.com/527x527",
+    };
+    const response = await request(app)
+      .put("/v1/cars/195")
+      .set(`Authorization`, `Bearer ${token}`)
+      .send(car);
+    expect(response.statusCode).toBe(200);
+  });
+
+  it("failed update data car", async () => {
+    const failedAdmin = {
+      email: "john@binar.co.id",
+      password: "12345675",
+    };
+    const check = await request(app).post("/v1/auth/login").send(failedAdmin);
+    const res = JSON.parse(check.text);
+    const failedToken = res.accessToken;
+    console.log(failedToken);
+    const failedCar = {
+      name: "Toyota 1",
+      price: 3000000,
+      size: "SMALL",
+      image: "https://source.unsplash.com/527x527",
+    };
+    const response = await request(app)
+      .put("/v1/cars/198")
+      .set(`Authorization`, `Bearer ${failedToken}`)
+      .send(failedCar);
+    expect(response.statusCode).toBe(401);
+  });
 });
