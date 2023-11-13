@@ -1,5 +1,5 @@
-const request = require('supertest');
-const app = require('../app')
+const request = require("supertest");
+const app = require("../app");
 // const baseURL = "http://localhost:8000"
 const dotenv = require("dotenv");
 dotenv.config();
@@ -26,15 +26,32 @@ dotenv.config();
 // });
 
 describe("API get all cars", () => {
-    it("success get all data cars", async () => {
-        const response = await request(app).get('/v1/cars')
-        expect(response.statusCode).toBe(200);
-    });
+  it("success get all data cars", async () => {
+    const response = await request(app).get("/v1/cars");
+    expect(response.statusCode).toBe(200);
+  });
 });
 
 describe("API get car By ID", () => {
-    it("success get data car", async () => {
-        const response = await request(app).get('/v1/cars/20')
-        expect(response.statusCode).toBe(200);
-    });
+  it("success get data car", async () => {
+    const response = await request(app).get("/v1/cars/20");
+    expect(response.statusCode).toBe(200);
+  });
+
+  it("failed geting data car: data is not found", async () => {
+    const response = await request(app).get("/v1/cars/20");
+    expect(response.statusCode).toBe(404);
+  });
+});
+
+describe("API put car", () => {
+  it("success update data car", async () => {
+    const response = await request(app).put("/v1/cars/20");
+    expect(response.statusCode).toBe(201);
+  });
+
+  it("failed update data car: data is not found", async () => {
+    const response = await request(app).put("/v1/cars/20");
+    expect(response.statusCode).toBe(404);
+  });
 });
