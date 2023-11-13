@@ -22,3 +22,29 @@ describe("API Login", () => {
         expect(response.statusCode).toBe(401);
     });
 });
+
+
+describe("API Register", () => {
+    it("success register", async () => {
+      const user = {
+        name: "membertest1",
+        email: "membertest1@binar.co.id",
+        password: "123456"
+      };
+      const response = await request(app).post('/v1/auth/register').send(user);
+      expect(response.statusCode).toBe(201);
+      expect(response.body).toHaveProperty("accessToken");
+    });
+  
+    it("failed register: email already taken", async () => {
+      const existingUser = {
+        name: "membertest1",
+        email: "membertest1@binar.co.id",
+        password: "1234567"
+      };
+      const response = await request(app).post('/v1/auth/register').send(existingUser);
+      expect(response.statusCode).toBe(500);
+      expect(response.body).toHaveProperty("message", "Email already taken");
+    });
+  });
+  
