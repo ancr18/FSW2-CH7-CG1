@@ -36,13 +36,11 @@ function apply(app) {
     authenticationController.authorize(accessControl.ADMIN),
     carController.handleCreateCar
   );
-
   app.post(
     "/v1/cars/:id/rent",
     authenticationController.authorize(accessControl.CUSTOMER),
     carController.handleRentCar
   );
-
   app.get("/v1/cars/:id", carController.handleGetCar);
   app.put(
     "/v1/cars/:id",
