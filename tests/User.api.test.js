@@ -1,24 +1,45 @@
-const request = require('supertest');
-const app = require('../app')
+const request = require("supertest");
+const app = require("../app");
 const dotenv = require("dotenv");
 dotenv.config();
 
 describe("API Login", () => {
-    it("success login", async () => {
-        const user = {
-            email: "fikri@binar.co.id",
-            password: "123456"
-        }
-        const response = await request(app).post('/v1/auth/login').send(user)
-        expect(response.statusCode).toBe(201);
-    });
+  it("success login", async () => {
+    const user = {
+      email: "fikri@binar.co.id",
+      password: "123456",
+    };
+    const response = await request(app).post("/v1/auth/login").send(user);
+    expect(response.statusCode).toBe(201);
+  });
 
-    it("failed login : wrong password", async () => {
-        const failedUser = {
-            email: "fikri@binar.co.id",
-            password: "1234656"
-        }
-        const response = await request(app).post('/v1/auth/login').send(failedUser)
-        expect(response.statusCode).toBe(401);
-    });
+  it("failed login : wrong password", async () => {
+    const failedUser = {
+      email: "fikri@binar.co.id",
+      password: "1234656",
+    };
+    const response = await request(app).post("/v1/auth/login").send(failedUser);
+    expect(response.statusCode).toBe(401);
+  });
+});
+
+// Fajrin
+// 2. /v1/auth/whoami: Test Success & Error
+describe("API WHOAMI", () => {
+  it("success whoami", async () => {
+    const token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IkZpa3JpIiwiZW1haWwiOiJmaWtyaUBiaW5hci5jby5pZCIsImltYWdlIjpudWxsLCJyb2xlIjp7ImlkIjoxLCJuYW1lIjoiQ1VTVE9NRVIifSwiaWF0IjoxNjk5ODg2ODQyfQ.4CFG0-WtPioB2Pxm7YqbWysyGDO0P9HlIiEX4appT_w";
+    const response = await request(app)
+      .get("/v1/auth/whoami")
+      .set(`Authorization`, `Bearer ${token}`);
+    expect(response.statusCode).toBe(200);
+  });
+
+  it("failed whoami", async () => {
+    const token = "nguwawor";
+    const response = await request(app)
+      .get("/v1/auth/whoami")
+      .set(`Authorization`, `Bearer ${token}`);
+    expect(response.statusCode).toBe(401);
+  });
 });
