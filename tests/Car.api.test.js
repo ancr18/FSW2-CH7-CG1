@@ -46,6 +46,8 @@ describe("API get car By ID", () => {
     expect(response.statusCode).toBe(200);
   });
 });
+
+// Ali
 describe("API put car", () => {
   it("success update data car", async () => {
     const admin = {
@@ -92,6 +94,7 @@ describe("API put car", () => {
   });
 });
 
+// Yoga
 describe("API insert rental data", () => {
   it("Success insert rental data", async () => {
     const user = {
