@@ -65,7 +65,7 @@ describe("API put car", () => {
       image: "https://source.unsplash.com/527x527",
     };
     const response = await request(app)
-      .put("/v1/cars/195")
+      .put("/v1/cars/20")
       .set(`Authorization`, `Bearer ${token}`)
       .send(car);
     expect(response.statusCode).toBe(200);
