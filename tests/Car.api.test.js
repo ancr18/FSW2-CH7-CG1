@@ -84,3 +84,20 @@ describe("API put car", () => {
     expect(response.statusCode).toBe(401);
   });
 });
+
+describe("API delete car", () => {
+  it("success delete car", async () => {
+    const admin = {
+      email: "john@binar.co.id",
+      password: "12345678",
+    };
+    const check = await request(app).post("/v1/auth/login").send(admin);
+    const res = JSON.parse(check.text);
+    const token = res.accessToken;
+    console.log(token);
+    const response = await request(app)
+      .delete("/v1/cars/102")
+      .set(`Authorization`, `Bearer ${token}`);
+    expect(response.statusCode).toBe(204);
+  });
+});
